@@ -162,7 +162,9 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-20 reveal" th:if="${featuredBooks != null and !featuredBooks.isEmpty()}">
-        <th:block th:each="book : ${featuredBooks}" th:replace="~{fragments :: book-card(${book})}"></th:block>
+        <th:block th:each="book : ${featuredBooks}">
+            <th:block th:replace="~{fragments :: book-card(${book})}"></th:block>
+        </th:block>
     </div>
 
     <div th:if="${featuredBooks == null or featuredBooks.isEmpty()}" class="text-center py-24 border border-dashed border-line rounded-sm mb-20">
@@ -189,7 +191,9 @@
              th:id="'shelf-panel-' + ${iter.index}"
              class="shelf-panel grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
              th:classappend="${iter.index == 0} ? 'is-active' : ''">
-            <th:block th:each="book : ${entry.value}" th:replace="~{fragments :: book-card(${book})}"></th:block>
+            <th:block th:each="book : ${entry.value}">
+                <th:block th:replace="~{fragments :: book-card(${book})}"></th:block>
+            </th:block>
         </div>
     </div>
 </main>

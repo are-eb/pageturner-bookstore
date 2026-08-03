@@ -30,7 +30,7 @@
             </div>
             <div class="panel p-6 bg-ink border-ink reveal" data-reveal-delay="240">
                 <p class="eyebrow text-brass">Total revenue</p>
-                <p class="font-display text-4xl text-bone mt-2" th:text="${'$' + #numbers.formatDecimal(revenue,1,2)}">$0.00</p>
+                <p class="font-display text-4xl text-bone mt-2" th:text="${'₹' + #numbers.formatDecimal(revenue,1,2)}">₹0.00</p>
             </div>
         </div>
 
@@ -58,7 +58,7 @@
                                               (${order.status.name() == 'CANCELLED'} ? 'badge-claret' : 'badge-brass')"
                               th:text="${order.status}">Status</span>
                     </td>
-                    <td class="py-3 text-right price text-ink" th:text="${'$' + #numbers.formatDecimal(order.totalAmount,1,2)}">$0.00</td>
+                    <td class="py-3 text-right price text-ink" th:text="${'₹' + #numbers.formatDecimal(order.totalAmount,1,2)}">₹0.00</td>
                 </tr>
                 <tr th:if="${recentOrders == null or recentOrders.isEmpty()}">
                     <td colspan="4" class="py-10 text-center text-ink-40">No orders yet.</td>

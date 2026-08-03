@@ -37,9 +37,9 @@
 
             <div class="flex items-center gap-5 mt-6 pb-6 border-b border-line flex-wrap">
                 <div class="flex items-baseline gap-2.5">
-                    <span class="price text-forest text-3xl" th:text="${'$' + #numbers.formatDecimal(book.price,1,2)}">$9.99</span>
+                    <span class="price text-forest text-3xl" th:text="${'₹' + #numbers.formatDecimal(book.price,1,2)}">₹9.99</span>
                     <span th:if="${book.originalPrice != null and book.discountPercent != null}"
-                          class="price text-ink40 text-lg line-through" th:text="${'$' + #numbers.formatDecimal(book.originalPrice,1,2)}">$12.99</span>
+                          class="price text-ink40 text-lg line-through" th:text="${'₹' + #numbers.formatDecimal(book.originalPrice,1,2)}">₹12.99</span>
                     <span th:if="${book.discountPercent != null}" class="badge badge-claret" th:text="${book.discountPercent} + '% off'">20% off</span>
                 </div>
                 <span class="flex items-center text-xs font-mono uppercase tracking-wide"

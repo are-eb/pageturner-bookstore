@@ -33,7 +33,7 @@
                     <td class="p-3"><a th:href="@{/orders/{id}(id=${order.id})}" class="text-forest hover:underline font-mono text-xs" th:text="'#' + ${order.id}">#1</a></td>
                     <td class="p-3 text-ink" th:text="${order.user.name}">Name</td>
                     <td class="p-3 text-ink-70 text-xs" th:text="${#temporals.format(order.orderDate, 'MMM d, yyyy')}">Date</td>
-                    <td class="p-3 price text-ink" th:text="${'$' + #numbers.formatDecimal(order.totalAmount,1,2)}">$0.00</td>
+                    <td class="p-3 price text-ink" th:text="${'₹' + #numbers.formatDecimal(order.totalAmount,1,2)}">₹0.00</td>
                     <td class="p-3">
                         <span class="badge"
                               th:classappend="${order.status.name() == 'DELIVERED'} ? 'badge-forest' :

@@ -13,6 +13,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findByGoogleBooksId(String googleBooksId);
 
+    boolean existsByIsbn(String isbn);
+
     @Query("SELECT b FROM Book b WHERE " +
            "(:keyword IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
            "OR LOWER(b.author) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +

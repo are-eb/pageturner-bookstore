@@ -130,12 +130,14 @@ public class DataInitializer implements CommandLineRunner {
     );
 
     private void seedBooks() {
-        if (bookRepository.count() > 0) {
-            return;
-        }
-
+        boolean catalogWasEmpty = bookRepository.count() == 0;
         int discountCount = 0;
+        int addedCount = 0;
         for (SeedBook s : STARTER_CATALOG) {
+            // Backfill the reliable starter set when an older partial catalog exists.
+            if (bookRepository.existsByIsbn(s.isbn())) {
+                continue;
+            }
             Book book = new Book();
             book.setTitle(s.title());
             book.setAuthor(s.author());
@@ -156,9 +158,16 @@ public class DataInitializer implements CommandLineRunner {
             }
             book.setStockQuantity(10 + (int) (Math.random() * 15));
             bookRepository.save(book);
+            addedCount++;
         }
-        log.info("Seeded starter catalog with {} books ({} on sale) - no external API calls required.",
-                STARTER_CATALOG.size(), discountCount);
+        if (addedCount > 0) {
+            log.info("Added {} missing starter books ({} on sale) - no external API calls required.",
+                    addedCount, discountCount);
+        }
+
+        if (!catalogWasEmpty) {
+            return;
+        }
 
         // Best-effort bonus: also try pulling a couple of live titles from Google Books,
         // purely as a nice-to-have. Never blocks or reduces the guaranteed catalog above.

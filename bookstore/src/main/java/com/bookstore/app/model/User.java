@@ -41,4 +41,17 @@ public class User {
     private boolean enabled = true;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    /** A small, upload-free avatar label for the account menu and profile page. */
+    public String getInitials() {
+        if (name == null || name.isBlank()) {
+            return "U";
+        }
+        String[] parts = name.trim().split("\\s+");
+        String initials = parts[0].substring(0, 1).toUpperCase();
+        if (parts.length > 1) {
+            initials += parts[parts.length - 1].substring(0, 1).toUpperCase();
+        }
+        return initials;
+    }
 }

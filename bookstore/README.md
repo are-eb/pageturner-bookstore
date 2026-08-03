@@ -71,6 +71,23 @@ All settings live in `src/main/resources/application.properties`:
 google.books.api.key=
 ```
 
+## Portfolio deployment
+
+The application can be deployed as a portfolio demo with its current H2 database and mock checkout.
+Do **not** enable the H2 console on a public deployment. It is an administrative development tool and
+is not required for the app to access its database.
+
+If you want a higher Google Books API quota, add this environment variable in your hosting provider's
+dashboard rather than committing a key to the repository:
+
+```text
+GOOGLE_BOOKS_API_KEY=your_google_books_key
+```
+
+The app still starts without that variable; Google Books searches then use the public rate-limited tier.
+For H2 data to survive restarts, choose hosting that provides a persistent disk and mount it at the
+application's working directory (the database is stored under `./data`).
+
 ## Switching to MySQL/PostgreSQL (optional, for production)
 
 Replace the H2 dependency usage in `application.properties`:

@@ -48,7 +48,7 @@
                     <td class="p-3 font-medium text-ink max-w-xs truncate" th:text="${book.title}">Title</td>
                     <td class="p-3 text-ink-70" th:text="${book.author}">Author</td>
                     <td class="p-3 text-ink-70 font-mono text-xs uppercase" th:text="${book.category}">Category</td>
-                    <td class="p-3 price text-ink" th:text="${'$' + #numbers.formatDecimal(book.price,1,2)}">$0.00</td>
+                    <td class="p-3 price text-ink" th:text="${'₹' + #numbers.formatDecimal(book.price,1,2)}">₹0.00</td>
                     <td class="p-3 font-mono text-xs" th:text="${book.stockQuantity}">0</td>
                     <td class="p-3 whitespace-nowrap">
                         <a th:href="@{/admin/books/{id}/edit(id=${book.id})}" class="text-forest hover:underline mr-3 font-medium">Edit</a>

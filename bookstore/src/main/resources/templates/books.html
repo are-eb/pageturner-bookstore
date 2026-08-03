@@ -34,7 +34,9 @@
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 reveal" th:if="${books.content != null and !books.content.isEmpty()}">
-        <th:block th:each="book : ${books.content}" th:replace="~{fragments :: book-card(${book})}"></th:block>
+        <th:block th:each="book : ${books.content}">
+            <th:block th:replace="~{fragments :: book-card(${book})}"></th:block>
+        </th:block>
     </div>
 
     <div th:if="${books.content == null or books.content.isEmpty()}" class="text-center py-24 border border-dashed border-line rounded-sm">

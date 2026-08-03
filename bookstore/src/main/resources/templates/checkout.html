@@ -21,12 +21,12 @@
             <div class="divide-y divide-line">
                 <div th:each="item : ${items}" class="flex justify-between py-3 text-sm">
                     <span class="text-ink" th:text="${item.book.title} + ' × ' + ${item.quantity}">Item</span>
-                    <span class="price text-ink" th:text="${'$' + #numbers.formatDecimal(item.book.price * item.quantity,1,2)}">$0.00</span>
+                    <span class="price text-ink" th:text="${'₹' + #numbers.formatDecimal(item.book.price * item.quantity,1,2)}">₹0.00</span>
                 </div>
             </div>
             <div class="flex justify-between pt-5 mt-2 border-t border-line">
                 <span class="font-display text-lg">Total</span>
-                <span class="price text-forest text-xl" th:text="${'$' + #numbers.formatDecimal(total,1,2)}">$0.00</span>
+                <span class="price text-forest text-xl" th:text="${'₹' + #numbers.formatDecimal(total,1,2)}">₹0.00</span>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
                     <label class="field-label">Shipping address</label>
                     <textarea name="shippingAddress" rows="4" required class="field" th:text="${address}" placeholder="Street, city, state, ZIP"></textarea>
                 </div>
-                <p class="text-xs text-ink-40 leading-relaxed">Payment is simulated for this demo — no card details required. Your order is marked <span class="font-mono text-ink70">Pending</span> until confirmed.</p>
+                <p class="text-xs text-ink-40 leading-relaxed"><strong>Mock payment for this portfolio demo:</strong> no card details are collected or processed. Your order is marked <span class="font-mono text-ink70">Pending</span> until confirmed.</p>
                 <button class="btn btn-primary w-full">Place order</button>
             </form>
         </div>

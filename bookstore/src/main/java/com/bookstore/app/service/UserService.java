@@ -34,6 +34,29 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
+    public User updateProfile(User user, String name, String address) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Please enter your name.");
+        }
+        user.setName(name.trim());
+        user.setAddress(address == null || address.isBlank() ? null : address.trim());
+        return userRepository.save(user);
+    }
+
+    public void changePassword(User user, String currentPassword, String newPassword, String confirmPassword) {
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Your current password is incorrect.");
+        }
+        if (newPassword == null || newPassword.length() < 8) {
+            throw new IllegalArgumentException("Your new password must contain at least 8 characters.");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            throw new IllegalArgumentException("Your new passwords do not match.");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
