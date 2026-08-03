@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Manage Books — Admin</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen font-sans">
+
+<div class="flex flex-col md:flex-row">
+    <div th:replace="~{admin/fragments :: sidebar('books')}"></div>
+
+    <main class="flex-1 p-6 md:p-12">
+        <div th:replace="~{fragments :: alerts}"></div>
+
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <p class="eyebrow text-ink40 mb-2">Catalog</p>
+                <h1 class="font-display text-3xl">Manage Books</h1>
+            </div>
+            <div class="flex gap-2.5">
+                <a href="/admin/import" class="btn btn-outline">Import from Google</a>
+                <a href="/admin/books/new" class="btn btn-primary">+ Add book</a>
+            </div>
+        </div>
+
+        <form action="/admin/books" method="get" class="mb-5">
+            <input type="text" name="q" th:value="${q}" placeholder="Search catalog&hellip;" class="field w-72"/>
+        </form>
+
+        <div class="panel overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                <tr class="text-left border-b border-line bg-bone-2">
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Cover</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Title</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Author</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Category</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Price</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Stock</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                <tr th:each="book : ${books}">
+                    <td class="p-3"><img th:if="${book.coverImageUrl}" th:src="${book.coverImageUrl}" class="w-9 h-13 object-cover rounded-sm border border-line"/></td>
+                    <td class="p-3 font-medium text-ink max-w-xs truncate" th:text="${book.title}">Title</td>
+                    <td class="p-3 text-ink-70" th:text="${book.author}">Author</td>
+                    <td class="p-3 text-ink-70 font-mono text-xs uppercase" th:text="${book.category}">Category</td>
+                    <td class="p-3 price text-ink" th:text="${'$' + #numbers.formatDecimal(book.price,1,2)}">$0.00</td>
+                    <td class="p-3 font-mono text-xs" th:text="${book.stockQuantity}">0</td>
+                    <td class="p-3 whitespace-nowrap">
+                        <a th:href="@{/admin/books/{id}/edit(id=${book.id})}" class="text-forest hover:underline mr-3 font-medium">Edit</a>
+                        <form th:action="@{/admin/books/{id}/delete(id=${book.id})}" method="post" class="inline"
+                              onsubmit="return confirm('Delete this book?');">
+                            <button class="text-claret hover:underline font-medium">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${books == null or books.isEmpty()}">
+                    <td colspan="7" class="p-10 text-center text-ink-40">No books found.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

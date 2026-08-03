@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${book.title} + ' — Pageturner'">Book — Pageturner</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen flex flex-col font-sans">
+
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<main class="flex-1 max-w-6xl mx-auto px-5 sm:px-8 py-12 w-full">
+    <a href="/books" class="inline-flex items-center gap-1.5 text-sm text-ink-70 hover:text-forest transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Back to catalog
+    </a>
+
+    <div class="mt-6 grid md:grid-cols-12 gap-12 panel p-8 sm:p-10 reveal is-visible">
+        <div class="md:col-span-4 flex md:justify-center">
+            <div class="w-full max-w-[280px]">
+                <div class="book-cover-wrap rounded-sm shadow-sm" style="aspect-ratio: 3/4;">
+                    <span th:if="${book.category}" class="shelf-ticket" th:text="${book.category}">Category</span>
+                    <img th:if="${book.coverImageUrl}" th:src="${book.coverImageUrl}" th:alt="${book.title}"/>
+                    <svg th:unless="${book.coverImageUrl}" class="w-16 h-16 text-line" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:col-span-8">
+            <p class="eyebrow text-ink40 mb-3" th:text="${book.publisher != null ? book.publisher : 'Pageturner Catalog'}">Publisher</p>
+            <h1 class="font-display text-3xl sm:text-4xl leading-tight" th:text="${book.title}">Title</h1>
+            <p class="text-ink-70 mt-2 text-lg" th:text="'by ' + ${book.author}">by Author</p>
+
+            <div class="flex items-center gap-5 mt-6 pb-6 border-b border-line flex-wrap">
+                <div class="flex items-baseline gap-2.5">
+                    <span class="price text-forest text-3xl" th:text="${'$' + #numbers.formatDecimal(book.price,1,2)}">$9.99</span>
+                    <span th:if="${book.originalPrice != null and book.discountPercent != null}"
+                          class="price text-ink40 text-lg line-through" th:text="${'$' + #numbers.formatDecimal(book.originalPrice,1,2)}">$12.99</span>
+                    <span th:if="${book.discountPercent != null}" class="badge badge-claret" th:text="${book.discountPercent} + '% off'">20% off</span>
+                </div>
+                <span class="flex items-center text-xs font-mono uppercase tracking-wide"
+                      th:classappend="${book.inStock} ? 'text-forest' : 'text-claret'">
+                    <span class="stock-dot" th:style="'background-color:' + (${book.inStock} ? '#2F5233' : '#7A2E2E')"></span>
+                    <span th:text="${book.inStock} ? (book.stockQuantity + ' in stock') : 'Currently sold out'"></span>
+                </span>
+                <span th:if="${book.rating != null}" class="badge badge-brass" th:text="'★ ' + ${book.rating} + ' / 5'"></span>
+            </div>
+            <p class="text-xs text-ink-40 font-mono mt-3">Standard delivery in 3&ndash;5 business days</p>
+
+            <p class="text-ink leading-relaxed mt-6" th:text="${book.description != null ? book.description : 'No description has been catalogued for this title yet.'}"></p>
+
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-3 mt-8 pt-6 border-t border-line text-sm">
+                <div th:if="${book.publisher}">
+                    <dt class="font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Publisher</dt>
+                    <dd class="text-ink mt-0.5" th:text="${book.publisher}"></dd>
+                </div>
+                <div th:if="${book.publishedDate}">
+                    <dt class="font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Published</dt>
+                    <dd class="text-ink mt-0.5" th:text="${book.publishedDate}"></dd>
+                </div>
+                <div th:if="${book.isbn}">
+                    <dt class="font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">ISBN</dt>
+                    <dd class="text-ink mt-0.5" th:text="${book.isbn}"></dd>
+                </div>
+                <div th:if="${book.language}">
+                    <dt class="font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Language</dt>
+                    <dd class="text-ink mt-0.5" th:text="${book.language}"></dd>
+                </div>
+            </dl>
+
+            <div class="mt-9" sec:authorize="isAuthenticated()">
+                <form th:if="${book.inStock}" th:action="@{/cart/add}" method="post" class="flex items-center gap-3" data-qty-stepper>
+                    <input type="hidden" name="bookId" th:value="${book.id}"/>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" data-qty-step="-1" class="w-9 h-9 flex items-center justify-center border border-line rounded-sm text-ink-70 hover:border-forest hover:text-forest transition-colors" aria-label="Decrease quantity">&minus;</button>
+                        <input type="number" name="quantity" value="1" min="1" th:max="${book.stockQuantity}" class="field w-16 text-center"/>
+                        <button type="button" data-qty-step="1" class="w-9 h-9 flex items-center justify-center border border-line rounded-sm text-ink-70 hover:border-forest hover:text-forest transition-colors" aria-label="Increase quantity">+</button>
+                    </div>
+                    <button class="btn btn-primary px-8">Add to cart</button>
+                </form>
+                <p th:unless="${book.inStock}" class="badge badge-claret">This title is currently out of stock</p>
+            </div>
+            <div class="mt-9" sec:authorize="isAnonymous()">
+                <a href="/login" class="btn btn-dark px-8">Sign in to purchase</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

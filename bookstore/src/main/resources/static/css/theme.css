@@ -1,0 +1,738 @@
+/* =========================================================================
+   PAGETURNER — DESIGN SYSTEM
+   A literary, editorial identity for an independent online bookstore.
+   Palette: warm paper + deep ink + botanical forest + gilt brass + claret.
+   ========================================================================= */
+
+:root {
+  --bone:        #F3EFE6;   /* page background — warm paper */
+  --bone-2:      #EAE3D2;   /* recessed panels / alt sections */
+  --paper-card:  #FCFAF4;   /* card surface, slightly lighter than bg */
+  --ink:         #1B1F2A;   /* primary text / dark surfaces */
+  --ink-70:      #565B68;   /* secondary text */
+  --ink-40:      #93968F;   /* tertiary / placeholder text */
+  --line:        #DCD3BC;   /* hairline borders, warm */
+  --line-dark:   #2C3140;   /* hairline borders on dark surfaces */
+  --forest:      #2F5233;   /* primary brand accent */
+  --forest-dark: #223D26;   /* hover state */
+  --forest-tint: #E4EBE2;   /* pale wash for badges */
+  --brass:       #A9803F;   /* gilt accent — ratings, tags */
+  --brass-light: #D8C39B;
+  --claret:      #7A2E2E;   /* alerts, sale, destructive */
+  --claret-tint: #F3E4E1;
+}
+
+/* ---------- Typography ---------- */
+
+.font-display { font-family: "Fraunces", Georgia, serif; font-optical-sizing: auto; }
+.font-body    { font-family: "Inter", -apple-system, sans-serif; }
+.font-mono    { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+body {
+  font-family: "Inter", -apple-system, sans-serif;
+  color: var(--ink);
+  background-color: var(--bone);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .heading {
+  font-family: "Fraunces", Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.price {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Focus states (accessibility, not decoration) ---------- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  padding: 0.7rem 1.5rem;
+  border-radius: 3px;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease, transform 150ms ease;
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background-color: var(--forest);
+  color: var(--bone);
+}
+.btn-primary:hover { background-color: var(--forest-dark); }
+
+.btn-dark {
+  background-color: var(--ink);
+  color: var(--bone);
+}
+.btn-dark:hover { background-color: #0F1219; }
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-outline:hover { border-color: var(--ink); }
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--ink-70);
+  padding: 0.5rem 0.75rem;
+}
+.btn-ghost:hover { color: var(--ink); }
+
+.btn-sm { padding: 0.4rem 0.85rem; font-size: 0.75rem; }
+
+/* ---------- Inputs ---------- */
+
+.field {
+  width: 100%;
+  background-color: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+  transition: border-color 150ms ease;
+}
+.field::placeholder { color: var(--ink-40); }
+.field:focus { border-color: var(--forest); outline: none; }
+
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-70);
+  margin-bottom: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Cards ---------- */
+
+.panel {
+  background-color: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+/* Book card — the signature "shelf ticket" catalog treatment */
+
+.book-card {
+  background-color: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  overflow: hidden;
+  transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.book-card:hover {
+  border-color: var(--forest);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -12px rgba(27, 31, 42, 0.18);
+}
+
+.book-cover-wrap {
+  position: relative;
+  background: linear-gradient(180deg, var(--bone-2), var(--bone));
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.book-cover-wrap img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+.book-card:hover .book-cover-wrap img { transform: scale(1.04); }
+
+.shelf-ticket {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: var(--ink);
+  color: var(--bone);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+.stock-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+}
+
+.discount-flag {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: var(--claret);
+  color: #fff;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.2rem 0.45rem;
+  border-radius: 2px;
+  z-index: 2;
+}
+
+/* ---------- Trust badge strip ---------- */
+
+.trust-strip {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background-color: var(--paper-card);
+}
+
+/* ---------- Hero carousel ---------- */
+
+.hero-slide {
+  display: none;
+}
+
+.hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(243, 239, 230, 0.3);
+  transition: background-color 200ms ease, width 200ms ease;
+}
+.hero-dot.is-active {
+  background-color: var(--brass);
+  width: 18px;
+  border-radius: 3px;
+}
+
+/* ---------- Category tabs ---------- */
+
+.shelf-tab {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.55rem 1rem;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-70);
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.shelf-tab.is-active {
+  color: var(--forest);
+  border-color: var(--forest);
+}
+.shelf-panel { display: none; }
+.shelf-panel.is-active { display: grid; }
+
+/* ---------- Toast notifications ---------- */
+.toast-stack {
+  position: fixed;
+  top: 84px;
+  right: 1.25rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: min(380px, calc(100vw - 2.5rem));
+}
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  box-shadow: 0 12px 28px -10px rgba(27, 31, 42, 0.28);
+  animation: toast-in 350ms cubic-bezier(.16,1,.3,1);
+  border: 1px solid transparent;
+}
+.toast.is-leaving {
+  animation: toast-out 220ms ease forwards;
+}
+.toast-success { background-color: var(--paper-card); border-color: var(--forest); color: var(--forest-dark); }
+.toast-error { background-color: var(--paper-card); border-color: var(--claret); color: var(--claret); }
+.toast-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0 0.15rem;
+}
+.toast-close:hover { opacity: 1; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toast-out {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(24px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast, .toast.is-leaving { animation: none; }
+}
+
+/* ---------- Marquee ticker ---------- */
+.marquee-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: inline-flex;
+  width: max-content;
+  animation: marquee-scroll 36s linear infinite;
+}
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* ---------- Ledger divider ---------- */
+
+.ledger-rule {
+  border: none;
+  border-top: 1px dashed var(--line);
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border-radius: 2px;
+}
+.badge-forest { background-color: var(--forest-tint); color: var(--forest-dark); }
+.badge-claret { background-color: var(--claret-tint); color: var(--claret); }
+.badge-brass  { background-color: #F3EAD8; color: #8A6A32; }
+.badge-ink    { background-color: var(--bone-2); color: var(--ink-70); }
+
+/* ---------- Nav / header ---------- */
+
+.site-header {
+  background-color: rgba(27, 31, 42, 0.97);
+  backdrop-filter: blur(8px);
+}
+
+.logo-mark {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background-color: var(--brass);
+  color: var(--ink);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  animation: cart-badge-pop 260ms cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cart-badge-pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cart-badge { animation: none; }
+}
+
+/* ---------- Pagination ---------- */
+
+.page-pip {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8125rem;
+  border: 1px solid var(--line);
+  transition: all 150ms ease;
+}
+.page-pip.active {
+  background-color: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+.page-pip:not(.active):hover { border-color: var(--forest); color: var(--forest); }
+
+/* ---------- Misc ---------- */
+
+.text-ink-70 { color: var(--ink-70); }
+.text-ink-40 { color: var(--ink-40); }
+.bg-bone-2 { background-color: var(--bone-2); }
+.border-hair { border-color: var(--line); }
+
+::selection {
+  background-color: var(--forest);
+  color: var(--bone);
+}
+
+/* =========================================================================
+   SUPREME LAYER — signature motion, texture, and depth
+   ========================================================================= */
+
+/* ---------- Native cross-page transitions (Chromium; ignored elsewhere) ---------- */
+@view-transition {
+  navigation: auto;
+}
+
+/* ---------- Paper grain — subtle tactile texture across the whole site ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Custom scrollbar ---------- */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--bone); }
+::-webkit-scrollbar-thumb { background-color: var(--line); border-radius: 6px; border: 3px solid var(--bone); }
+::-webkit-scrollbar-thumb:hover { background-color: var(--brass); }
+* { scrollbar-color: var(--line) var(--bone); scrollbar-width: thin; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 700ms cubic-bezier(.16,1,.3,1), transform 700ms cubic-bezier(.16,1,.3,1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Header scroll state ---------- */
+.site-header {
+  transition: box-shadow 250ms ease, background-color 250ms ease;
+}
+.site-header.is-scrolled {
+  box-shadow: 0 8px 24px -12px rgba(0,0,0,0.35);
+  background-color: rgba(27, 31, 42, 1);
+}
+
+/* ---------- Book cover: 3D tilt + signature page-corner fold ---------- */
+.book-card {
+  perspective: 900px;
+}
+.book-cover-wrap {
+  transform-style: preserve-3d;
+  transition: transform 120ms ease;
+  will-change: transform;
+}
+
+/* the fold — a small triangle that lifts like a dog-eared page on hover */
+.book-cover-wrap::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 22px 22px;
+  border-color: transparent transparent var(--bone) transparent;
+  filter: drop-shadow(-2px -2px 3px rgba(27,31,42,0.25));
+  transition: border-width 220ms cubic-bezier(.16,1,.3,1);
+  z-index: 3;
+  pointer-events: none;
+}
+.book-card:hover .book-cover-wrap::after {
+  border-width: 0 0 34px 34px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book-cover-wrap { transition: none; }
+}
+
+/* ---------- Magnetic buttons ---------- */
+.btn-primary, .btn-dark {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before, .btn-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.16), transparent);
+  transform: translateX(-120%);
+  transition: transform 550ms ease;
+}
+.btn-primary:hover::before, .btn-dark:hover::before {
+  transform: translateX(120%);
+}
+
+/* ---------- Kinetic headline (staggered word reveal) ---------- */
+.kinetic-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: kinetic-in 800ms cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes kinetic-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-word { opacity: 1; transform: none; animation: none; }
+}
+
+/* ---------- Glass panel variant (used sparingly, over dark/photographic areas) ---------- */
+.panel-glass {
+  background-color: rgba(252, 250, 244, 0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  backdrop-filter: blur(14px);
+  border-radius: 4px;
+}
+
+/* ---------- Animated brass underline ---------- */
+.brass-rule {
+  position: relative;
+  display: inline-block;
+}
+.brass-rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 100%;
+  background-color: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms cubic-bezier(.16,1,.3,1);
+}
+.reveal.is-visible .brass-rule::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Cursor glow (desktop, pointer:fine only; created + toggled via JS) ---------- */
+#cursor-glow {
+  position: fixed;
+  top: 0; left: 0;
+  width: 340px; height: 340px;
+  margin-left: -170px; margin-top: -170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169,128,63,0.10) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 200ms ease;
+  opacity: 0;
+}
+
+/* =========================================================================
+   INTERACTION LAYER — texture, motion, and depth used sitewide.
+   Every effect below degrades gracefully: no JS = static but complete page;
+   prefers-reduced-motion = motion stripped, layout untouched.
+   ========================================================================= */
+
+/* ---------- Paper grain (tactile texture over every page) ---------- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+/* ---------- View Transitions (native cross-fade between pages, Chromium) ---------- */
+
+@supports (view-transition-name: none) {
+  ::view-transition-old(root) { animation: pt-fade-out 180ms ease both; }
+  ::view-transition-new(root) { animation: pt-fade-in 220ms ease both; }
+}
+@keyframes pt-fade-out { to { opacity: 0; transform: translateY(-4px); } }
+@keyframes pt-fade-in { from { opacity: 0; transform: translateY(4px); } }
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Kinetic headline reveal (staggered word/line entrance) ---------- */
+
+.kinetic-line {
+  overflow: hidden;
+  display: block;
+}
+.kinetic-line > span {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  animation: pt-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes pt-rise {
+  to { transform: translateY(0); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kinetic-line > span { transform: none; opacity: 1; animation: none; }
+}
+
+/* ---------- Card tilt (pointer devices only, subtle) ---------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .book-card { transform-style: preserve-3d; will-change: transform; }
+}
+
+/* ---------- Button ink ripple ---------- */
+
+.btn { position: relative; overflow: hidden; }
+.ink-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: pt-ripple 550ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes pt-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+/* ---------- Custom cursor (desktop precision pointers only) ---------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .pt-cursor-active { cursor: none; }
+  .pt-cursor-active a, .pt-cursor-active button { cursor: none; }
+}
+.pt-cursor-dot, .pt-cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.pt-cursor-dot {
+  width: 5px; height: 5px;
+  background-color: var(--brass);
+}
+.pt-cursor-ring {
+  width: 28px; height: 28px;
+  border: 1px solid var(--brass);
+  opacity: 0.6;
+  transition: width 180ms ease, height 180ms ease, opacity 180ms ease, background-color 180ms ease;
+}
+.pt-cursor-ring.is-hovering {
+  width: 44px; height: 44px;
+  background-color: rgba(169, 128, 63, 0.08);
+}
+
+/* ---------- Mobile navigation drawer ---------- */
+
+.nav-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(320px, 85vw);
+  background-color: var(--ink);
+  transform: translateX(100%);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+  overflow-y: auto;
+}
+.nav-drawer.is-open { transform: translateX(0); }
+.nav-scrim {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 18, 25, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+  z-index: 99;
+}
+.nav-scrim.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-drawer, .nav-scrim { transition: none; }
+}

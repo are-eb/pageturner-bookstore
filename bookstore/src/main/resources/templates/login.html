@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign In — Pageturner</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen flex flex-col font-sans">
+
+<div th:replace="~{fragments :: navbar}"></div>
+
+<main class="flex-1 grid lg:grid-cols-2">
+    <div class="hidden lg:flex flex-col justify-between bg-ink text-bone p-14 relative overflow-hidden" data-cursor-glow>
+        <div class="absolute inset-0 opacity-[0.04]" style="background-image: repeating-linear-gradient(180deg, transparent, transparent 27px, currentColor 28px);"></div>
+        <div class="relative">
+            <p class="eyebrow text-brass mb-4">Welcome back</p>
+            <h2 class="font-display text-4xl leading-tight max-w-sm">Pick up right<br/>where you<br/><span class="italic text-brass">left off.</span></h2>
+        </div>
+        <p class="relative text-white/40 text-sm font-mono">PAGETURNER — CATALOG NO. 001</p>
+    </div>
+
+    <div class="flex items-center justify-center px-6 py-16">
+        <div class="w-full max-w-sm">
+            <p class="eyebrow text-ink40 mb-2">Account</p>
+            <h1 class="font-display text-3xl mb-1">Sign in</h1>
+            <p class="text-sm text-ink-70 mb-8">Enter your credentials to continue.</p>
+
+            <div th:if="${param.error}" class="badge badge-claret w-full py-2.5 mb-5 justify-center normal-case font-sans text-sm">
+                Invalid email or password.
+            </div>
+            <div th:if="${success}" class="badge badge-forest w-full py-2.5 mb-5 justify-center normal-case font-sans text-sm" th:text="${success}"></div>
+
+            <form th:action="@{/login}" method="post" class="space-y-4">
+                <div>
+                    <label class="field-label">Email</label>
+                    <input type="email" name="username" required class="field"/>
+                </div>
+                <div>
+                    <label class="field-label">Password</label>
+                    <div class="relative">
+                        <input type="password" name="password" id="login-password" required class="field pr-14"/>
+                        <button type="button" data-password-toggle="login-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-forest hover:underline">Show</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary w-full">Sign in</button>
+            </form>
+
+            <p class="text-sm text-ink-70 mt-7 text-center">
+                No account? <a href="/register" class="text-forest font-medium hover:underline">Create one</a>
+            </p>
+            <p class="text-xs text-ink-40 mt-5 text-center font-mono">DEMO ADMIN — admin&#64;bookstore.com / admin123</p>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

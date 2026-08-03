@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard — Pageturner</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen font-sans">
+
+<div class="flex flex-col md:flex-row">
+    <div th:replace="~{admin/fragments :: sidebar('dashboard')}"></div>
+
+    <main class="flex-1 p-6 md:p-12">
+        <p class="eyebrow text-ink40 mb-2">Overview</p>
+        <h1 class="font-display text-3xl mb-10">Dashboard</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+            <div class="panel p-6 reveal" data-reveal-delay="0">
+                <p class="eyebrow text-ink40">Books catalogued</p>
+                <p class="font-display text-4xl text-ink mt-2" th:text="${bookCount}">0</p>
+            </div>
+            <div class="panel p-6 reveal" data-reveal-delay="80">
+                <p class="eyebrow text-ink40">Orders placed</p>
+                <p class="font-display text-4xl text-ink mt-2" th:text="${orderCount}">0</p>
+            </div>
+            <div class="panel p-6 reveal" data-reveal-delay="160">
+                <p class="eyebrow text-ink40">Registered readers</p>
+                <p class="font-display text-4xl text-ink mt-2" th:text="${userCount}">0</p>
+            </div>
+            <div class="panel p-6 bg-ink border-ink reveal" data-reveal-delay="240">
+                <p class="eyebrow text-brass">Total revenue</p>
+                <p class="font-display text-4xl text-bone mt-2" th:text="${'$' + #numbers.formatDecimal(revenue,1,2)}">$0.00</p>
+            </div>
+        </div>
+
+        <div class="panel p-6 sm:p-7">
+            <div class="flex items-center justify-between mb-5">
+                <p class="eyebrow text-ink40">Recent activity</p>
+                <a href="/admin/orders" class="text-sm text-forest hover:underline font-medium">View all orders</a>
+            </div>
+            <table class="w-full text-sm">
+                <thead>
+                <tr class="text-left border-b border-line">
+                    <th class="pb-3 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Order</th>
+                    <th class="pb-3 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Customer</th>
+                    <th class="pb-3 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Status</th>
+                    <th class="pb-3 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40 text-right">Total</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                <tr th:each="order : ${recentOrders}">
+                    <td class="py-3"><a th:href="@{/orders/{id}(id=${order.id})}" class="text-forest hover:underline font-mono text-xs" th:text="'#' + ${order.id}">#1</a></td>
+                    <td class="py-3 text-ink" th:text="${order.user.name}">Name</td>
+                    <td class="py-3">
+                        <span class="badge"
+                              th:classappend="${order.status.name() == 'DELIVERED'} ? 'badge-forest' :
+                                              (${order.status.name() == 'CANCELLED'} ? 'badge-claret' : 'badge-brass')"
+                              th:text="${order.status}">Status</span>
+                    </td>
+                    <td class="py-3 text-right price text-ink" th:text="${'$' + #numbers.formatDecimal(order.totalAmount,1,2)}">$0.00</td>
+                </tr>
+                <tr th:if="${recentOrders == null or recentOrders.isEmpty()}">
+                    <td colspan="4" class="py-10 text-center text-ink-40">No orders yet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

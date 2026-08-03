@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Import from Google Books — Admin</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen font-sans">
+
+<div class="flex flex-col md:flex-row">
+    <div th:replace="~{admin/fragments :: sidebar('import')}"></div>
+
+    <main class="flex-1 p-6 md:p-12">
+        <div th:replace="~{fragments :: alerts}"></div>
+
+        <p class="eyebrow text-ink40 mb-2">Acquisitions</p>
+        <h1 class="font-display text-3xl mb-2">Import from Google Books</h1>
+        <p class="text-sm text-ink-70 mb-8">Search the free Google Books catalog and add titles straight into your store.</p>
+
+        <form th:action="@{/admin/import/search}" method="get" class="flex gap-2 mb-10 max-w-xl">
+            <input type="text" name="q" th:value="${q}" placeholder="Search title, author, or ISBN&hellip;" required class="field"/>
+            <button class="btn btn-primary flex-shrink-0">Search</button>
+        </form>
+
+        <div th:if="${results != null and !results.isEmpty()}" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div th:each="r : ${results}" class="panel p-4 flex flex-col">
+                <div class="flex gap-3">
+                    <div class="w-16 h-24 bg-bone-2 border border-line rounded-sm overflow-hidden flex-shrink-0 flex items-center justify-center">
+                        <img th:if="${r.coverImageUrl}" th:src="${r.coverImageUrl}" class="h-full w-full object-cover"/>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-display text-sm leading-snug text-ink line-clamp-2" th:text="${r.title}">Title</p>
+                        <p class="text-xs text-ink-70 mt-1 line-clamp-1" th:text="${r.author}">Author</p>
+                        <p class="text-[0.6875rem] font-mono uppercase text-ink40 mt-1" th:text="${r.category}">Category</p>
+                    </div>
+                </div>
+                <form th:action="@{/admin/import/add}" method="post" class="mt-3 space-y-2">
+                    <input type="hidden" name="googleBooksId" th:value="${r.googleBooksId}"/>
+                    <input type="hidden" name="title" th:value="${r.title}"/>
+                    <input type="hidden" name="author" th:value="${r.author}"/>
+                    <input type="hidden" name="description" th:value="${r.description}"/>
+                    <input type="hidden" name="isbn" th:value="${r.isbn}"/>
+                    <input type="hidden" name="publisher" th:value="${r.publisher}"/>
+                    <input type="hidden" name="publishedDate" th:value="${r.publishedDate}"/>
+                    <input type="hidden" name="category" th:value="${r.category}"/>
+                    <input type="hidden" name="language" th:value="${r.language}"/>
+                    <input type="hidden" name="coverImageUrl" th:value="${r.coverImageUrl}"/>
+                    <div class="flex items-center gap-2">
+                        <input type="number" step="0.01" min="0" name="price" th:value="${r.suggestedPrice}" class="field w-20 py-1.5 text-xs" title="Price"/>
+                        <input type="number" min="0" name="stock" value="10" class="field w-16 py-1.5 text-xs" title="Stock"/>
+                        <button class="btn btn-dark btn-sm flex-1">+ Add</button>
+                    </div>
+                    <label class="flex items-center gap-1.5 text-[0.6875rem] text-ink-70 cursor-pointer">
+                        <input type="checkbox" name="onSale" value="true" class="accent-claret"/>
+                        Mark as on sale (25% off list price)
+                    </label>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${results != null and results.isEmpty() and error == null}" class="text-center py-20 panel border-dashed">
+            <p class="font-display text-lg text-ink-70">No results for &ldquo;<span th:text="${q}"></span>&rdquo;.</p>
+        </div>
+
+        <div th:if="${error != null}" class="text-center py-20 panel border-dashed border-claret/40">
+            <p class="font-display text-lg text-claret">Couldn't reach Google Books.</p>
+            <p class="text-sm text-ink-70 mt-2 max-w-md mx-auto" th:text="${error}">Error detail</p>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

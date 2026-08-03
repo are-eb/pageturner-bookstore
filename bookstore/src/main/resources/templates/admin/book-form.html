@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${book.id != null ? 'Edit Book' : 'Add Book'} + ' — Admin'">Book Form — Admin</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen font-sans">
+
+<div class="flex flex-col md:flex-row">
+    <div th:replace="~{admin/fragments :: sidebar('books')}"></div>
+
+    <main class="flex-1 p-6 md:p-12 max-w-2xl">
+        <a href="/admin/books" class="inline-flex items-center gap-1.5 text-sm text-ink-70 hover:text-forest transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Back to book list
+        </a>
+        <p class="eyebrow text-ink40 mt-6 mb-2">Catalog Entry</p>
+        <h1 class="font-display text-3xl mb-8" th:text="${book.id != null ? 'Edit Book' : 'Add Book'}">Book Form</h1>
+
+        <form th:action="@{/admin/books/save}" method="post" class="panel p-7 space-y-5">
+            <input type="hidden" name="id" th:value="${book.id}"/>
+            <input th:if="${book.googleBooksId != null}" type="hidden" name="googleBooksId" th:value="${book.googleBooksId}"/>
+
+            <div>
+                <label class="field-label">Title</label>
+                <input type="text" name="title" th:value="${book.title}" required class="field"/>
+            </div>
+            <div>
+                <label class="field-label">Author</label>
+                <input type="text" name="author" th:value="${book.author}" class="field"/>
+            </div>
+            <div>
+                <label class="field-label">Description</label>
+                <textarea name="description" rows="4" class="field" th:text="${book.description}"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="field-label">Category</label>
+                    <input type="text" name="category" th:value="${book.category}" class="field"/>
+                </div>
+                <div>
+                    <label class="field-label">ISBN</label>
+                    <input type="text" name="isbn" th:value="${book.isbn}" class="field"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="field-label">Publisher</label>
+                    <input type="text" name="publisher" th:value="${book.publisher}" class="field"/>
+                </div>
+                <div>
+                    <label class="field-label">Published date</label>
+                    <input type="text" name="publishedDate" th:value="${book.publishedDate}" class="field"/>
+                </div>
+            </div>
+            <div>
+                <label class="field-label">Cover image URL</label>
+                <input type="text" name="coverImageUrl" th:value="${book.coverImageUrl}" class="field"/>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="field-label">Price (USD)</label>
+                    <input type="number" step="0.01" min="0" name="price" th:value="${book.price}" required class="field"/>
+                </div>
+                <div>
+                    <label class="field-label">Stock quantity</label>
+                    <input type="number" min="0" name="stockQuantity" th:value="${book.stockQuantity}" required class="field"/>
+                </div>
+            </div>
+            <div>
+                <label class="field-label">Original price / MRP <span class="normal-case text-ink40">(optional — shows a strikethrough + % off badge)</span></label>
+                <input type="number" step="0.01" min="0" name="originalPrice" th:value="${book.originalPrice}" class="field"/>
+            </div>
+
+            <button class="btn btn-primary w-full">Save book</button>
+        </form>
+    </main>
+</div>
+
+</body>
+</html>

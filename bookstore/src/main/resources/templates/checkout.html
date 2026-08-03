@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Checkout — Pageturner</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen flex flex-col font-sans">
+
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<main class="flex-1 max-w-4xl mx-auto px-5 sm:px-8 py-12 w-full">
+    <p class="eyebrow text-ink40 mb-2">Final Step</p>
+    <h1 class="font-display text-3xl sm:text-4xl mb-10 pb-6 border-b border-line">Checkout</h1>
+
+    <div class="grid md:grid-cols-5 gap-8">
+        <div class="md:col-span-3 panel p-6 sm:p-7">
+            <p class="eyebrow text-ink40 mb-4">Order summary</p>
+            <div class="divide-y divide-line">
+                <div th:each="item : ${items}" class="flex justify-between py-3 text-sm">
+                    <span class="text-ink" th:text="${item.book.title} + ' × ' + ${item.quantity}">Item</span>
+                    <span class="price text-ink" th:text="${'$' + #numbers.formatDecimal(item.book.price * item.quantity,1,2)}">$0.00</span>
+                </div>
+            </div>
+            <div class="flex justify-between pt-5 mt-2 border-t border-line">
+                <span class="font-display text-lg">Total</span>
+                <span class="price text-forest text-xl" th:text="${'$' + #numbers.formatDecimal(total,1,2)}">$0.00</span>
+            </div>
+        </div>
+
+        <div class="md:col-span-2 panel p-6 sm:p-7">
+            <p class="eyebrow text-ink40 mb-4">Shipping details</p>
+            <form th:action="@{/checkout}" method="post" class="space-y-4">
+                <div>
+                    <label class="field-label">Shipping address</label>
+                    <textarea name="shippingAddress" rows="4" required class="field" th:text="${address}" placeholder="Street, city, state, ZIP"></textarea>
+                </div>
+                <p class="text-xs text-ink-40 leading-relaxed">Payment is simulated for this demo — no card details required. Your order is marked <span class="font-mono text-ink70">Pending</span> until confirmed.</p>
+                <button class="btn btn-primary w-full">Place order</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

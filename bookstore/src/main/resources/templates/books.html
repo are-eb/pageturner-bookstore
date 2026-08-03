@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Browse the Catalog — Pageturner</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen flex flex-col font-sans">
+
+<div th:replace="~{fragments :: navbar}"></div>
+<div th:replace="~{fragments :: alerts}"></div>
+
+<main class="flex-1 max-w-7xl mx-auto px-5 sm:px-8 py-12 w-full">
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-line pb-6">
+        <div>
+            <p class="eyebrow text-ink40 mb-2">Catalog</p>
+            <h1 class="font-display text-3xl sm:text-4xl">
+                <span th:if="${q != null and !q.isEmpty()}" th:text="'Results for &ldquo;' + ${q} + '&rdquo;'"></span>
+                <span th:if="${q == null or q.isEmpty()}">Every Title on the Shelf</span>
+            </h1>
+            <p class="text-sm text-ink-70 mt-1" th:text="${books.totalElements} + ' title' + (${books.totalElements} == 1 ? '' : 's') + ' found'">0 titles</p>
+        </div>
+
+        <form th:action="@{/books}" method="get" class="flex gap-2">
+            <input type="text" name="q" th:value="${q}" placeholder="Title or author&hellip;" class="field w-56"/>
+            <select name="category" class="field w-auto">
+                <option value="">All categories</option>
+                <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}" th:selected="${cat == category}"></option>
+            </select>
+            <button class="btn btn-dark">Filter</button>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 reveal" th:if="${books.content != null and !books.content.isEmpty()}">
+        <th:block th:each="book : ${books.content}" th:replace="~{fragments :: book-card(${book})}"></th:block>
+    </div>
+
+    <div th:if="${books.content == null or books.content.isEmpty()}" class="text-center py-24 border border-dashed border-line rounded-sm">
+        <p class="font-display text-xl text-ink-70">No titles matched that search.</p>
+        <p class="text-sm text-ink-40 mt-1">Try a broader keyword, or clear the category filter.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center gap-2 mt-14" th:if="${books.totalPages > 1}">
+        <a th:each="i : ${#numbers.sequence(0, books.totalPages - 1)}"
+           th:href="@{/books(q=${q}, category=${category}, page=${i})}"
+           th:text="${i + 1}"
+           th:classappend="${i == books.number} ? 'active' : ''"
+           class="page-pip w-9 h-9 flex items-center justify-center rounded-sm"></a>
+    </div>
+</main>
+
+<div th:replace="~{fragments :: footer}"></div>
+
+</body>
+</html>

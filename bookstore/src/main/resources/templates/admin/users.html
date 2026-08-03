@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Manage Users — Admin</title>
+    <div th:replace="~{fragments :: head-assets}"></div>
+</head>
+<body class="bg-bone min-h-screen font-sans">
+
+<div class="flex flex-col md:flex-row">
+    <div th:replace="~{admin/fragments :: sidebar('users')}"></div>
+
+    <main class="flex-1 p-6 md:p-12">
+        <div th:replace="~{fragments :: alerts}"></div>
+        <p class="eyebrow text-ink40 mb-2">Accounts</p>
+        <h1 class="font-display text-3xl mb-8">Manage Users</h1>
+
+        <div class="panel overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                <tr class="text-left border-b border-line bg-bone-2">
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Name</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Email</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Role</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Status</th>
+                    <th class="p-3.5 font-mono text-[0.6875rem] uppercase tracking-wide text-ink40">Action</th>
+                </tr>
+                </thead>
+                <tbody class="divide-y divide-line">
+                <tr th:each="u : ${users}">
+                    <td class="p-3 font-medium text-ink" th:text="${u.name}">Name</td>
+                    <td class="p-3 text-ink-70" th:text="${u.email}">email</td>
+                    <td class="p-3 font-mono text-xs uppercase text-ink-70" th:text="${u.role}">ROLE</td>
+                    <td class="p-3">
+                        <span class="badge" th:classappend="${u.enabled} ? 'badge-forest' : 'badge-claret'"
+                              th:text="${u.enabled} ? 'Active' : 'Disabled'">Active</span>
+                    </td>
+                    <td class="p-3">
+                        <form th:action="@{/admin/users/{id}/toggle(id=${u.id})}" method="post">
+                            <button class="text-forest hover:underline text-sm font-medium" th:text="${u.enabled} ? 'Disable' : 'Enable'">Toggle</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${users == null or users.isEmpty()}">
+                    <td colspan="5" class="p-10 text-center text-ink-40">No users registered.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
